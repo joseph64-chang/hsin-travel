@@ -63,11 +63,11 @@ function buildPrompt(prefs: TravelPreferences) {
 }
 
 export async function POST(request: Request) {
-  const apiKey = process.env.OPENAI_API_KEY;
+  const apiKey = request.headers.get("x-openai-key")?.trim();
   if (!apiKey) {
     return NextResponse.json(
-      { error: "伺服器尚未設定 OPENAI_API_KEY，請在 .env.local 中設定後重新啟動。" },
-      { status: 500 }
+      { error: "尚未設定 OpenAI API Key，請前往「設定」頁面輸入你的 API Key。" },
+      { status: 401 }
     );
   }
 

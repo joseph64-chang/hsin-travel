@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { href: "/", label: "首頁" },
   { href: "/travel", label: "旅遊規劃" },
   { href: "/blog", label: "景點介紹" },
+  { href: "/settings", label: "設定" },
 ];
 
 export default function Header() {

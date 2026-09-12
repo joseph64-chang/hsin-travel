@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { useApiKey } from "@/lib/api-key";
 import {
   REGION_OPTIONS,
   DOMESTIC_AREA_OPTIONS,
@@ -22,6 +24,7 @@ function getTodayISO() {
 }
 
 export default function TravelPage() {
+  const { apiKey } = useApiKey();
   const [region, setRegion] = useState<string>(REGION_OPTIONS[0]);
   const [area, setArea] = useState<string>(DOMESTIC_AREA_OPTIONS[0]);
   const [departureDate, setDepartureDate] = useState<string>(getTodayISO());
@@ -68,6 +71,12 @@ export default function TravelPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    if (!apiKey) {
+      setError("尚未設定 OpenAI API Key，請先前往「設定」頁面輸入你的 API Key。");
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setRecommendations(null);
@@ -90,7 +99,10 @@ export default function TravelPage() {
     try {
       const res = await fetch("/api/travel/recommend", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-openai-key": apiKey,
+        },
         body: JSON.stringify(preferences),
       });
       const data = await res.json();
@@ -314,6 +326,14 @@ export default function TravelPage() {
       {error && (
         <p className="glass rounded-xl border-red-400/40 px-4 py-3 text-sm text-red-600 dark:text-red-400">
           {error}
+          {!apiKey && (
+            <>
+              {" "}
+              <Link href="/settings" className="underline underline-offset-2">
+                前往設定
+              </Link>
+            </>
+          )}
         </p>
       )}
 
