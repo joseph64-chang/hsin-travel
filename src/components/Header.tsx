@@ -14,7 +14,12 @@ const NAV_LINKS = [
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const { name } = useUserName();
+  const { name, setName } = useUserName();
+
+  function handleLogout() {
+    setName("");
+    setOpen(false);
+  }
 
   return (
     <header className="glass sticky top-0 z-50 border-x-0 border-t-0">
@@ -40,6 +45,15 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
+          {name && (
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="text-sm font-medium text-foreground/70 transition hover:text-foreground"
+            >
+              登出
+            </button>
+          )}
           <Link href="/travel" className="btn-primary !px-5 !py-2 text-sm">
             開始規劃
           </Link>
@@ -81,6 +95,15 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
+          {name && (
+            <button
+              type="button"
+              onClick={handleLogout}
+              className="rounded-lg px-3 py-2.5 text-left text-sm font-medium text-foreground/80 transition hover:bg-white/40 dark:hover:bg-white/10"
+            >
+              登出
+            </button>
+          )}
           <Link
             href="/travel"
             onClick={() => setOpen(false)}
