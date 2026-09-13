@@ -13,7 +13,11 @@ const jiufen = DOMESTIC_DESTINATIONS.find((d) => d.slug === "jiufen")!.image;
 const mountFuji = INTERNATIONAL_DESTINATIONS.find((d) => d.slug === "mount-fuji")!.image;
 const aurora = INTERNATIONAL_DESTINATIONS.find((d) => d.slug === "aurora")!.image;
 
-const STATS = ["10+ 精選景點", "3 種行程比較", "AI 秒速生成"];
+const STATS = [
+  { value: "10+", label: "精選景點" },
+  { value: "3", label: "行程方案比較" },
+  { value: "<1", label: "分鐘生成行程" },
+];
 
 const FEATURES = [
   {
@@ -49,6 +53,41 @@ const FEATURES = [
       </svg>
     ),
   },
+  {
+    title: "BYOK，資料自己掌控",
+    desc: "使用你自己的 OpenAI API Key，費用透明、金鑰只存在你的瀏覽器，不經過我們的伺服器。",
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 3 4 6v6c0 4.5 3.2 7.7 8 9 4.8-1.3 8-4.5 8-9V6l-8-3Z" />
+        <path d="M9.5 12l1.8 1.8L15 10.2" />
+      </svg>
+    ),
+  },
+];
+
+const STEPS = [
+  { title: "選擇你的條件", desc: "國內或出國、天數、預算、旅遊風格，用選單和點選幾秒完成。" },
+  { title: "AI 立即生成", desc: "送出後 AI 依你的條件即時分析，產出完整每日行程。" },
+  { title: "比較後出發", desc: "一次取得 3 個風格不同的方案，直接比較、直接安排。" },
+];
+
+const FAQS = [
+  {
+    q: "需要付費才能使用嗎？",
+    a: "Hsin Travel 本身免費使用，採 BYOK（Bring Your Own Key）模式，只要在「設定」頁輸入你自己的 OpenAI API Key 即可，實際費用依你的 OpenAI 帳單計算。",
+  },
+  {
+    q: "我的 API Key 安全嗎？",
+    a: "你的 API Key 只會儲存在你瀏覽器的 localStorage，並在呼叫行程規劃時直接由瀏覽器帶出，不會上傳或儲存在我們的伺服器。",
+  },
+  {
+    q: "可以規劃國外行程嗎？",
+    a: "可以，國內外景點都支援。在旅遊規劃頁選擇「國外」，再挑選想去的國家與地區即可。",
+  },
+  {
+    q: "AI 生成的行程準確嗎？",
+    a: "AI 會依你輸入的條件產生建議行程，方便你快速比較與規劃方向；實際出發前建議再次確認景點開放時間、交通與訂位資訊。",
+  },
 ];
 
 export default function Home() {
@@ -70,17 +109,6 @@ export default function Home() {
             會立刻幫你生成多個客製化行程方案，讓你輕鬆比較、直接出發。
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-2 lg:justify-start">
-            {STATS.map((s) => (
-              <span
-                key={s}
-                className="rounded-full border border-black/10 bg-white/40 px-3 py-1 text-xs font-medium text-foreground/70 backdrop-blur-md dark:border-white/15 dark:bg-white/5"
-              >
-                {s}
-              </span>
-            ))}
-          </div>
-
           <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
             <Link href="/travel" className="btn-primary">
               立即開始規劃
@@ -89,6 +117,10 @@ export default function Home() {
               熱門景點
             </a>
           </div>
+
+          <p className="text-xs text-foreground/50">
+            免費使用・BYOK 自備 API Key・不需註冊帳號
+          </p>
         </div>
 
         <div className="relative mx-auto hidden aspect-[4/5] w-full max-w-sm lg:block">
@@ -127,22 +159,56 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="features" className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6 md:pb-24">
-        <div className="mb-6 flex flex-col gap-1 text-center sm:mb-8">
-          <h2 className="font-display text-xl font-semibold sm:text-2xl">怎麼開始？三步驟就好</h2>
-          <p className="text-sm text-foreground/60">從條件到行程，全程不用五分鐘。</p>
+      <section className="border-y border-black/5 bg-white/30 py-8 backdrop-blur-md dark:border-white/10 dark:bg-white/[0.03]">
+        <div className="mx-auto grid w-full max-w-4xl grid-cols-3 gap-4 px-4 text-center sm:px-6">
+          {STATS.map((s) => (
+            <div key={s.label} className="flex flex-col gap-1">
+              <span className="font-display text-2xl font-semibold sm:text-4xl">{s.value}</span>
+              <span className="text-xs text-foreground/60 sm:text-sm">{s.label}</span>
+            </div>
+          ))}
         </div>
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-          {FEATURES.map((f, i) => (
+      </section>
+
+      <section id="features" className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 md:py-24">
+        <div className="mb-6 flex flex-col gap-1 text-center sm:mb-8">
+          <span className="mx-auto chip border-black/10 bg-white/50 text-foreground/70 dark:border-white/15 dark:bg-white/5">
+            功能特色
+          </span>
+          <h2 className="mt-3 font-display text-xl font-semibold sm:text-2xl">
+            為什麼選擇 Hsin Travel
+          </h2>
+          <p className="text-sm text-foreground/60">一個工具，搞定選擇、規劃、比較。</p>
+        </div>
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {FEATURES.map((f) => (
             <div key={f.title} className="glass relative flex flex-col gap-3 overflow-hidden rounded-2xl p-6">
-              <span className="pointer-events-none absolute -right-3 -top-6 select-none font-display text-8xl font-bold text-foreground/[0.04]">
-                {String(i + 1).padStart(2, "0")}
-              </span>
               <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-sky-500 via-cyan-500 to-teal-400 text-white shadow-md shadow-sky-500/25 [&_svg]:h-5 [&_svg]:w-5">
                 {f.icon}
               </div>
               <h3 className="font-display text-lg font-semibold">{f.title}</h3>
               <p className="text-sm leading-relaxed text-foreground/70">{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6 md:pb-24">
+        <div className="mb-6 flex flex-col gap-1 text-center sm:mb-8">
+          <h2 className="font-display text-xl font-semibold sm:text-2xl">怎麼開始？三步驟就好</h2>
+          <p className="text-sm text-foreground/60">從條件到行程，全程不用一分鐘。</p>
+        </div>
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+          {STEPS.map((step, i) => (
+            <div key={step.title} className="glass relative flex flex-col gap-3 overflow-hidden rounded-2xl p-6">
+              <span className="pointer-events-none absolute -right-3 -top-6 select-none font-display text-8xl font-bold text-foreground/[0.04]">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-sky-500 via-cyan-500 to-teal-400 text-sm font-semibold text-white shadow-md shadow-sky-500/25">
+                {i + 1}
+              </span>
+              <h3 className="font-display text-lg font-semibold">{step.title}</h3>
+              <p className="text-sm leading-relaxed text-foreground/70">{step.desc}</p>
             </div>
           ))}
         </div>
@@ -173,6 +239,33 @@ export default function Home() {
         </div>
       </section>
 
+      <section id="faq" className="mx-auto w-full max-w-3xl px-4 pb-16 sm:px-6 md:pb-24">
+        <div className="mb-6 flex flex-col gap-1 text-center sm:mb-8">
+          <h2 className="font-display text-xl font-semibold sm:text-2xl">常見問題</h2>
+          <p className="text-sm text-foreground/60">關於費用、資料安全與使用方式。</p>
+        </div>
+        <div className="flex flex-col gap-3">
+          {FAQS.map((item) => (
+            <details key={item.q} className="glass group rounded-2xl p-5 open:pb-5">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-medium marker:content-none">
+                {item.q}
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  className="h-4 w-4 shrink-0 text-foreground/50 transition group-open:rotate-45"
+                >
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </summary>
+              <p className="mt-3 text-sm leading-relaxed text-foreground/70">{item.a}</p>
+            </details>
+          ))}
+        </div>
+      </section>
+
       <section className="mx-auto w-full max-w-6xl px-4 pb-16 sm:px-6 md:pb-24">
         <div className="glass relative overflow-hidden rounded-3xl px-6 py-12 text-center sm:px-12 sm:py-16">
           <div
@@ -188,6 +281,9 @@ export default function Home() {
           <Link href="/travel" className="btn-primary mt-6 inline-flex">
             立即開始規劃
           </Link>
+          <p className="mt-4 text-xs text-foreground/50">
+            免費使用・BYOK 自備 API Key・不需註冊帳號
+          </p>
         </div>
       </section>
     </main>
