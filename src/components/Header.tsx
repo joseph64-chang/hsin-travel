@@ -7,8 +7,8 @@ import { useUserName } from "@/lib/user-name";
 
 const NAV_LINKS = [
   { href: "/", label: "首頁" },
-  { href: "/travel", label: "旅遊規劃" },
   { href: "/blog", label: "景點介紹" },
+  { href: "/travel", label: "旅遊規劃" },
   { href: "/settings", label: "設定" },
 ];
 

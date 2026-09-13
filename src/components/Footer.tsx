@@ -17,14 +17,14 @@ export default function Footer() {
           <Link href="/" className="text-foreground/60 transition hover:text-foreground">
             首頁
           </Link>
+          <Link href="/blog" className="text-foreground/60 transition hover:text-foreground">
+            景點介紹
+          </Link>
           <Link
             href="/travel"
             className="text-foreground/60 transition hover:text-foreground"
           >
             旅遊規劃
-          </Link>
-          <Link href="/blog" className="text-foreground/60 transition hover:text-foreground">
-            景點介紹
           </Link>
         </div>
 
